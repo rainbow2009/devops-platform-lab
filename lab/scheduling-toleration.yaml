@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      tolerations:
+        - key: "workload"
+          operator: "Equal"
+          value: "database"
+          effect: "NoSchedule"
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi

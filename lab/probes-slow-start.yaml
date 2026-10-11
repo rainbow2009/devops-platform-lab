@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slow-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slow-app
+  template:
+    metadata:
+      labels:
+        app: slow-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          command: ["sh", "-c", "sleep 30 && nginx -g 'daemon off;'"]
+          ports:
+            - containerPort: 80
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 5
+            failureThreshold: 12     # 12 × 5 = 60 секунд на старт
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 5          

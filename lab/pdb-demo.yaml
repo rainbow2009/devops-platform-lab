@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: web
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 2
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: web-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: web

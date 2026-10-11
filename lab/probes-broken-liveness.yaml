@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: probes-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: probes-demo
+  template:
+    metadata:
+      labels:
+        app: probes-demo
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /healthz               # nginx отдаёт 200 на корень
+              port: 80
+            initialDelaySeconds: 5   # подождать 5 сек после старта
+            periodSeconds: 5         # проверять каждые 5 сек
+            failureThreshold: 3      # 3 провала подряд = рестарт
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: probes-demo
+spec:
+  selector:
+    app: probes-demo
+  ports:
+    - port: 80

@@ -1,0 +1,31 @@
+serverFiles:
+  recording_rules.yml:
+    groups:
+      - name: podinfo-slo
+        rules:
+          - record: slo:podinfo_errors:ratio_rate5m
+            expr: |
+              sum(rate(http_request_duration_seconds_count{app_kubernetes_io_name="podinfo", path!~"healthz|readyz|metrics", status=~"5.."}[5m]))
+              /
+              sum(rate(http_request_duration_seconds_count{app_kubernetes_io_name="podinfo", path!~"healthz|readyz|metrics"}[5m]))
+          - record: slo:podinfo_errors:ratio_rate1h
+            expr: |
+              sum(rate(http_request_duration_seconds_count{app_kubernetes_io_name="podinfo", path!~"healthz|readyz|metrics", status=~"5.."}[1h]))
+              /
+              sum(rate(http_request_duration_seconds_count{app_kubernetes_io_name="podinfo", path!~"healthz|readyz|metrics"}[1h]))
+
+  alerting_rules.yml:
+    groups:
+      - name: podinfo-slo-alerts
+        rules:
+          - alert: PodinfoErrorBudgetFastBurn
+            expr: |
+              slo:podinfo_errors:ratio_rate1h > (14.4 * 0.001)
+              and
+              slo:podinfo_errors:ratio_rate5m > (14.4 * 0.001)
+            for: 2m
+            labels:
+              severity: page
+            annotations:
+              summary: "podinfo is burning its error budget too fast"
+              description: "Error ratio over 5m is {{ $value | humanizePercentage }}. At this rate the 30-day budget is gone in about 2 days."
