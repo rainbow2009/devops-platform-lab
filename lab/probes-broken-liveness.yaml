@@ -19,11 +19,11 @@ spec:
             - containerPort: 80
           livenessProbe:
             httpGet:
-              path: /healthz               # nginx отдаёт 200 на корень
+              path: /healthz          # BROKEN on purpose: nginx has no /healthz -> 404 -> restart loop
               port: 80
-            initialDelaySeconds: 5   # подождать 5 сек после старта
-            periodSeconds: 5         # проверять каждые 5 сек
-            failureThreshold: 3      # 3 провала подряд = рестарт
+            initialDelaySeconds: 5   # wait 5s after container start
+            periodSeconds: 5         # check every 5s
+            failureThreshold: 3      # 3 failures in a row = restart
           readinessProbe:
             httpGet:
               path: /

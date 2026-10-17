@@ -1,5 +1,5 @@
 apiVersion: v2
 name: payment-service
 description: Payment service Helm chart
-version: 0.1.0           # версия чарта
-appVersion: "1.0.0"       # версия приложения
+version: 0.1.0           # chart version
+appVersion: "1.0.0"       # application version

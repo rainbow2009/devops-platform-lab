@@ -7,13 +7,13 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/rainbow2009/sre-learning.git
+    repoURL: https://github.com/rainbow2009/devops-platform-lab.git
     targetRevision: main
-    path: helm/payment-service        # путь к чарту в репо
+    path: helm/payment-service        # chart path in the repo
 
     helm:
       valueFiles:
-        - ../values-uat.yaml          # путь к values относительно чарта
+        - ../values-uat.yaml          # values file, relative to the chart
 
   destination:
     server: https://kubernetes.default.svc    

@@ -6,7 +6,7 @@ RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-27.
     | tar xz --strip-components=1 -C /usr/local/bin docker/docker
 
 USER jenkins
-# Плагины  
+# Plugins
 RUN jenkins-plugin-cli --plugins \
     git \
     workflow-aggregator \

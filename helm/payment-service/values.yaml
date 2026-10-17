@@ -1,18 +1,18 @@
-# Образ
+# Image
 image:
   repository: nginx
   tag: alpine
   pullPolicy: IfNotPresent
 
-# Масштабирование
+# Scaling
 replicaCount: 2
 
-# Сеть
+# Networking
 service:
   type: ClusterIP
   port: 80
 
-# Ресурсы
+# Resources
 resources:
   requests:
     cpu: 100m
@@ -21,10 +21,10 @@ resources:
     cpu: 200m
     memory: 128Mi
 
-# Конфигурация приложения
+# Application config
 config:
   APP_PORT: "8080"
   LOG_LEVEL: "info"
 
-# Окружение
+# Environment
 environment: dev

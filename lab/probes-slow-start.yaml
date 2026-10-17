@@ -23,7 +23,7 @@ spec:
               path: /
               port: 80
             periodSeconds: 5
-            failureThreshold: 12     # 12 × 5 = 60 секунд на старт
+            failureThreshold: 12     # 12 x 5s = up to 60s to start
           livenessProbe:
             httpGet:
               path: /

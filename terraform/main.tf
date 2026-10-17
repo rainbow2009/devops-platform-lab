@@ -18,6 +18,12 @@ variable "environment" {
   default = "uat"
 }
 
+variable "github_repo" {
+  description = "GitHub repository (owner/name) allowed to assume the CI role via OIDC"
+  type        = string
+  default     = "rainbow2009/devops-platform-lab"
+}
+
 locals {
   name_prefix = "tf-${var.environment}"
   common_tags = {

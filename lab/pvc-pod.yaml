@@ -9,8 +9,8 @@ spec:
       command: ["sh", "-c", "sleep 3600"]
       volumeMounts:
         - name: data
-          mountPath: /data          # куда диск монтируется внутри контейнера
+          mountPath: /data          # mount point inside the container
   volumes:
     - name: data
       persistentVolumeClaim:
-        claimName: test-pvc         # какую заявку использовать
+        claimName: test-pvc         # which PVC to use

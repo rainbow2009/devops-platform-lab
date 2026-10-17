@@ -1,6 +1,6 @@
 name: Terraform Check
 
-# Когда запускается
+# Triggers
 on:
   push:
     branches: [main]
@@ -10,7 +10,7 @@ on:
     paths: ['terraform/**']
   workflow_dispatch:                
 
-# Что делает
+# Jobs
 jobs:
   check:
     name: Validate Terraform
