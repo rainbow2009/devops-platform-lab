@@ -33,6 +33,8 @@ flowchart LR
 | **CD: Argo CD** | `argocd/` | Application with automated sync, `prune` and `selfHeal`: the cluster always matches Git. |
 | **Kubernetes labs** | `lab/` | Probes, scheduling (taints/affinity), PDB, storage, RBAC, SLO burn-rate alerts. See [lab/README.md](lab/README.md). |
 
+> **Note on AWS:** the AWS resources (IAM OIDC role, ECR) were deployed in a personal sandbox account and are currently torn down to avoid costs. The code is kept as a working reference. The GitHub Actions image build is switched to manual-only for this reason; the Terraform check workflow, Jenkins pipeline, Helm chart, Argo CD and Kubernetes labs all run without AWS.
+
 ## Key decisions
 
 - **OIDC instead of AWS access keys** in CI: short-lived credentials, trust limited to this repository.
@@ -52,8 +54,8 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl apply -f argocd/payment-app.yaml
 
-# Terraform
-cd terraform && terraform init && terraform plan
+# Terraform (static checks, no AWS account needed)
+cd terraform && terraform fmt -check && terraform init -backend=false && terraform validate
 ```
 
 ## Roadmap

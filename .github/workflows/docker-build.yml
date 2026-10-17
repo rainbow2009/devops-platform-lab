@@ -1,9 +1,12 @@
 name: Build and Push Docker Image
 
+# Automatic runs are disabled: the AWS sandbox account used by this pipeline
+# has been torn down. To run again, restore the push trigger below and
+# re-create the IAM role with terraform/github-oidc.tf.
 on:
-  push:
-    branches: [main]
-    paths: ['app/**']
+  # push:
+  #   branches: [main]
+  #   paths: ['app/**']
   workflow_dispatch:
 
 env:
